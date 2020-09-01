@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy
@@ -11,12 +5,6 @@ import scipy
 from matplotlib.colors import LogNorm
 from scipy import stats 
 from astropy.io import fits
-
-plt.style.use('dark_background')
-
-
-# In[2]:
-
 
 wavelengths = np.array([310, 325, 340, 365, 385, 400, 465, 525, 590, 628])
 
@@ -32,10 +20,6 @@ for i in wavelengths:
     locals()["qhypoly1d" + str(i)] = np.poly1d(locals()["qhycoef" + str(i)])
     locals()["qhyslope" + str(i)], locals()["qhyintercept" + str(i)], locals()["qhyrvalue" + str(i)], locals()["qhypvalue" + str(i)], locals()["qhystderr" + str(i)] = scipy.stats.linregress(locals()["qhyx" + str(i)], locals()["qhyy" + str(i)])
 
-
-# In[ ]:
-
-
 for i in wavelengths:
     for j in range(0, 10):
         locals()["pixis" + str(i) + '_' + str(j+1) + 's'] = fits.open('./qe_data/pixis' + str(i) + '_' + str(j+1) + 's.fts')
@@ -47,10 +31,6 @@ for i in wavelengths:
     locals()["pixiscoef" + str(i)] = np.polyfit(locals()["pixisx" + str(i)], locals()["pixisy" + str(i)], 1)
     locals()["pixispoly1d" + str(i)] = np.poly1d(locals()["pixiscoef" + str(i)])
     locals()["pixisslope" + str(i)], locals()["pixisintercept" + str(i)], locals()["pixisrvalue" + str(i)], locals()["pixispvalue" + str(i)], locals()["pixisstderr" + str(i)] = scipy.stats.linregress(locals()["pixisx" + str(i)], locals()["pixisy" + str(i)])
-
-
-# In[ ]:
-
 
 qhypixel = 3.76**2 #pixel size is 3.76x3.76 micrometers
 pixispixel = 20**2 #pixel size is 20x20 micrometers
@@ -65,25 +45,10 @@ for i in wavelengths:
 
 ratios = np.array([ratio310, ratio325, ratio340, ratio365, ratio385, ratio400, ratio465, ratio525, ratio590, ratio628])
 
-
-# In[ ]:
-
-
 pixis_qe = np.array([34, 34, 34, 41, 65, 82, 92, 89, 90, 92])
 qhy_qe = ratios*pixis_qe
-
-
-# In[ ]:
-
 
 plt.plot(wavelengths*10, qhy_qe, 'w.')
 plt.xlabel(r'Wavelength $(\mathrm{\AA})$')
 plt.ylabel(r'QHY600 Absolute QE $(\%)$')
 plt.show()
-
-
-# In[ ]:
-
-
-
-
